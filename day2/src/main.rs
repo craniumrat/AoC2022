@@ -37,10 +37,55 @@ fn get_index(a: &str) -> usize {
     }
 }
 
+fn get_win_lose_draw_index(first: &str, win_lose_draw: &str) -> usize {
+    match first { 
+        "A" => match win_lose_draw {
+            "X" => 2,
+            "Y" => 0,
+            "Z" => 1,
+            _ => unreachable!()
+        },
+        "B" => match win_lose_draw {
+            "X" => 0,
+            "Y" => 1,
+            "Z" => 2,
+            _ => unreachable!()
+        },
+        "C" => match  win_lose_draw {
+            "X" => 1,
+            "Y" => 2,
+            "Z" => 0,
+            _ => unreachable!()
+        },
+        _ => unreachable!()
+    }
+}
+
 fn main() {
 
     let scores = get_scores();
     let mut sum = 0;
+    
+    // //Part 1
+    // if let Ok(lines) = read_lines("input.txt") {
+    //     // Consumes the iterator, returns an (Optional) String
+    //     for line in lines {
+    //         if let Ok(pairs) = line {
+    //             println!("{}", pairs);
+    //             let mut parts = pairs.split(' ');
+    //             let first = parts.next().unwrap();
+    //             let second = parts.next().unwrap();
+
+    //             let first_index = get_index(first);
+    //             let second_index = get_index(second);
+                
+    //             println!("{}", scores[first_index][second_index]);
+    //             sum += scores[first_index][second_index];
+    //         }
+    //     }
+    // }
+
+    // println!("{}", sum);
 
     if let Ok(lines) = read_lines("input.txt") {
         // Consumes the iterator, returns an (Optional) String
@@ -52,13 +97,14 @@ fn main() {
                 let second = parts.next().unwrap();
 
                 let first_index = get_index(first);
-                let second_index = get_index(second);
-                
+                let second_index = get_win_lose_draw_index(first, second);
+
                 println!("{}", scores[first_index][second_index]);
                 sum += scores[first_index][second_index];
             }
         }
     }
 
+    //Part 2
     println!("{}", sum);
 }
