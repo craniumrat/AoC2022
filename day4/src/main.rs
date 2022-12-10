@@ -30,20 +30,37 @@ where P: AsRef<Path>, {
 }
 
 fn main() {
-
     let mut sum = 0;
+
+    //Part 1
+    // if let Ok(lines) = read_lines("input.txt") {
+    //     for line in lines {
+    //         if let Ok(pairs) = line {
+    //             let pair = parse_pairs(&pairs);
+    //             if (pair.start1 >= pair.start2 && pair.end1 <= pair.end2) ||
+    //                  (pair.start2 >= pair.start1 && pair.end2 <= pair.end1) {
+    //                     sum += 1;
+    //             }
+    //         }
+    //     }
+    // }
+
+    // //Part 1
+    // println!("{}", sum);
+
+    //Part 2
     if let Ok(lines) = read_lines("input.txt") {
         for line in lines {
             if let Ok(pairs) = line {
                 let pair = parse_pairs(&pairs);
-                if (pair.start1 >= pair.start2 && pair.end1 <= pair.end2) ||
-                     (pair.start2 >= pair.start1 && pair.end2 <= pair.end1) {
+                if pair.start1 <= pair.end2 && pair.end1 >= pair.start2 {
                         sum += 1;
                 }
             }
         }
     }
 
-    //Part 1
+    //Part 2
     println!("{}", sum);
+
 }
