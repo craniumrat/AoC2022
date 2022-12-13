@@ -22,7 +22,7 @@ fn instruction_to_register_timestamp(instruction: &str, history: &mut Vec<Regist
         static ref ADDX_REGEX: Regex = Regex::new(r"addx (-?\d+)").unwrap(); 
     }
 
-    let last = history.iter().last().or_else(|| Some(&RegisterHistory{time_: 1, value: 1 }) ).unwrap().clone();
+    let last = history.iter().last().unwrap().clone();
 
     if instruction == "noop" {
         history.push(RegisterHistory {time_: last.time_ + 1, value: last.value });
@@ -46,6 +46,8 @@ fn main() -> io::Result<()> {
 
     let mut timestamp_registers: Vec<RegisterHistory> = vec![];
 
+    timestamp_registers.push(RegisterHistory { time_: 0, value: 1 });
+
     //Part 1
     if let Ok(lines) = read_lines("input.txt") {
         for line in lines {
@@ -56,14 +58,35 @@ fn main() -> io::Result<()> {
         }
     }
 
-    let mut sum = 0;
+    //Part 1
+    // let mut sum = 0;
 
-    for register_history in &timestamp_registers {
-        if register_history.time_ % 40 == 20 {
-            println!("{}: {}. Value: {}", register_history.time_, register_history.value, register_history.value * register_history.time_ as i32);
-            sum += register_history.value * register_history.time_ as i32;
-            println!("{}", sum);
+    // for register_history in &timestamp_registers {
+    //     if register_history.time_ % 40 == 20 {
+    //         println!("{}: {}. Value: {}", register_history.time_, register_history.value, register_history.value * register_history.time_ as i32);
+    //         sum += register_history.value * register_history.time_ as i32;
+    //         println!("{}", sum);
+    //     }
+    // }
+
+    //Part 2
+    let mut screen = vec![vec!['.'; 40]; 6];
+    for timestamp in &timestamp_registers {
+        let row = (timestamp.time_ / 40) as usize;
+        let col  = (timestamp.time_ % 40) as usize;
+
+        println!("{}: {} - {}", row, col, timestamp.value);
+
+        if (timestamp.value + 1) as usize == col || timestamp.value as usize == col || (timestamp.value - 1) as usize == col {
+            screen[row][col] = '#'
+        } 
+    }
+    
+    for row in screen {
+        for val in row {
+            print!("{}", val);
         }
+        println!("");
     }
 
     Ok(())
